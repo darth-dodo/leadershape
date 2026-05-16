@@ -6,3 +6,4 @@ export {
   mapToCartesian,
   radarPoints,
 } from './geometry';
+export { generateRadarSVG } from './svg';

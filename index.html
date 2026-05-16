@@ -143,6 +143,9 @@
               </template>
             </div>
 
+            <!-- Radar Chart -->
+            <div class="radar-container" x-html="radarSVG"></div>
+
             <!-- Description -->
             <div class="card">
               <p class="desc" x-text="primary.desc"></p>
@@ -206,9 +209,48 @@
               </button>
             </div>
 
+            <!-- Bibliography Toggle -->
+            <div class="bibliography-toggle">
+              <button @click="toggleRefs()" class="btn btn--ghost btn--small">
+                <span x-text="showRefs ? 'Hide Sources' : 'View Sources'"></span>
+              </button>
+            </div>
+
+            <!-- Bibliography -->
+            <template x-if="showRefs">
+              <div class="bibliography">
+                <div class="card">
+                  <h4 class="section-label">Core Books</h4>
+                  <div class="ref-list">
+                    <template x-for="ref in references" :key="ref.title">
+                      <div class="ref-item">
+                        <p class="ref-title" x-text="ref.title"></p>
+                        <p class="ref-meta">
+                          <span x-text="ref.author"></span> · <span x-text="ref.year"></span>
+                        </p>
+                        <p class="ref-note" x-text="ref.note"></p>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+                <div class="card">
+                  <h4 class="section-label">Frameworks</h4>
+                  <div class="ref-list">
+                    <template x-for="fw in frameworks" :key="fw.name">
+                      <div class="ref-item">
+                        <p class="ref-title" x-text="fw.name"></p>
+                        <p class="ref-meta" x-text="fw.source"></p>
+                        <p class="ref-note" x-text="fw.desc"></p>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+              </div>
+            </template>
+
             <!-- Attribution -->
             <div class="attribution">
-              <p>Built with care. Scenarios grounded in 16 books and 6 frameworks from engineering leadership literature.</p>
+              <p>Built with care. Scenarios grounded in leadership literature.</p>
             </div>
           </div>
         </div>

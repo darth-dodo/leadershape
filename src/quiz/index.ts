@@ -1,8 +1,9 @@
 import type { Phase, Scores, Choice, Scenario, Style, ArchetypeKey, ComboInsight } from '@/types';
 import { ARCHETYPE_KEYS } from '@/types';
-import { STYLES, SCENARIOS, ICONS } from '@/data';
+import { STYLES, SCENARIOS, ICONS, REFERENCES, FRAMEWORKS } from '@/data';
 import { getTopStyles, getComboInsight, TOTAL_SCENARIOS } from '@/scoring';
 import { generateShareText, copyToClipboard } from '@/sharing';
+import { generateRadarSVG } from '@/radar';
 
 interface QuizState {
   phase: Phase;
@@ -46,6 +47,8 @@ export function quiz() {
     icons: ICONS,
     archetypeKeys: ARCHETYPE_KEYS,
     totalScenarios: TOTAL_SCENARIOS,
+    references: REFERENCES,
+    frameworks: FRAMEWORKS,
 
     // Getters
     get scenario(): Scenario | undefined {
@@ -78,6 +81,12 @@ export function quiz() {
       return getComboInsight(this.topStyles);
     },
 
+    get radarSVG(): string {
+      const p = this.primary;
+      if (!p) return '';
+      return generateRadarSVG(this.scores, p.color);
+    },
+
     // Lifecycle
     init() {
       const t = resolveInitialTheme();
@@ -90,6 +99,10 @@ export function quiz() {
       this.theme = this.theme === 'dark' ? 'light' : 'dark';
       document.documentElement.dataset.theme = this.theme;
       localStorage.setItem('leadershape-theme', this.theme);
+    },
+
+    toggleRefs() {
+      this.showRefs = !this.showRefs;
     },
 
     start() {
