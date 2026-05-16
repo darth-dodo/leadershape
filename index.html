@@ -56,8 +56,10 @@
                 <span
                   class="tag"
                   :style="{ borderColor: styles[key].color + '30', color: styles[key].color }"
-                  x-text="styles[key].emoji + ' ' + styles[key].name"
-                ></span>
+                >
+                  <span class="tag__icon" x-html="icons[key]"></span>
+                  <span x-text="styles[key].name"></span>
+                </span>
               </template>
             </div>
             <button @click="start()" class="btn btn--primary">
@@ -111,7 +113,7 @@
                   class="score-chip"
                   :style="{ color: scores[key] > 0 ? styles[key].color + '99' : 'var(--text-faint)' }"
                 >
-                  <span x-text="styles[key].emoji"></span>
+                  <span class="score-chip__icon" x-html="icons[key]"></span>
                   <span x-text="scores[key]"></span>
                 </div>
               </template>
@@ -129,7 +131,7 @@
             <!-- Hero -->
             <div class="result-hero">
               <p class="eyebrow">Your Leadership Profile</p>
-              <div class="result-emoji" x-text="primary.emoji"></div>
+              <div class="result-icon" x-html="icons[topStyles[0][0]]"></div>
               <h2 class="result-title" :style="{ color: primary.color }" x-text="primary.name"></h2>
               <template x-if="secondary">
                 <p class="result-secondary">

@@ -1,6 +1,6 @@
 import type { Phase, Scores, Choice, Scenario, Style, ArchetypeKey, ComboInsight } from '@/types';
 import { ARCHETYPE_KEYS } from '@/types';
-import { STYLES, SCENARIOS } from '@/data';
+import { STYLES, SCENARIOS, ICONS } from '@/data';
 import { getTopStyles, getComboInsight, TOTAL_SCENARIOS } from '@/scoring';
 import { generateShareText, copyToClipboard } from '@/sharing';
 
@@ -43,6 +43,7 @@ export function quiz() {
 
     // Exposed data for templates
     styles: STYLES,
+    icons: ICONS,
     archetypeKeys: ARCHETYPE_KEYS,
     totalScenarios: TOTAL_SCENARIOS,
 
