@@ -514,3 +514,9 @@ body {
   background: var(--bg-card-hover);
   transform: scale(1.05);
 }
+
+.theme-toggle .icon {
+  width: 20px;
+  height: 20px;
+  color: var(--text-muted);
+}
