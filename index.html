@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LeaderShape | Engineering Leadership Assessment</title>
+    <meta name="description" content="Discover your engineering leadership style through realistic workplace scenarios." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles/main.css" />
+  </head>
+  <body>
+    <div x-data="quiz" class="app">
+
+      <!-- INTRO PHASE -->
+      <template x-if="phase === 'intro'">
+        <div class="phase-intro">
+          <div class="glow glow--top"></div>
+          <div class="glow glow--bottom"></div>
+          <div class="container">
+            <p class="eyebrow">A Leadership Simulation</p>
+            <h1 class="title">
+              What Kind of<br />
+              Engineering Leader<br />
+              Are You?
+            </h1>
+            <p class="subtitle">
+              Ten scenarios. Real decisions you'll recognize from your own weeks.
+              No right answers. Discover your instinctive leadership style across five archetypes.
+            </p>
+            <div class="archetype-tags">
+              <template x-for="key in archetypeKeys" :key="key">
+                <span
+                  class="tag"
+                  :style="{ borderColor: styles[key].color + '30', color: styles[key].color }"
+                  x-text="styles[key].emoji + ' ' + styles[key].name"
+                ></span>
+              </template>
+            </div>
+            <button @click="start()" class="btn btn--primary">
+              Start Your Monday
+            </button>
+            <p class="footnote">
+              ~5 min · Frameworks from Larson, Grove, Scott, Wiseman, Lencioni & Fournier
+            </p>
+          </div>
+        </div>
+      </template>
+
+      <!-- PLAY PHASE -->
+      <template x-if="phase === 'play'">
+        <div class="phase-play">
+          <div class="glow glow--top-right"></div>
+          <div class="container">
+            <div class="progress">
+              <div class="progress__header">
+                <span class="progress__label">Scenario <span x-text="Math.min(choiceCount + 1, totalScenarios)"></span> of <span x-text="totalScenarios"></span></span>
+                <span class="progress__pct" x-text="Math.round((choiceCount / totalScenarios) * 100) + '%'"></span>
+              </div>
+              <div class="progress__track">
+                <div class="progress__bar" :style="{ width: (choiceCount / totalScenarios) * 100 + '%' }"></div>
+              </div>
+            </div>
+
+            <p class="scenario-title" x-text="scenario?.title"></p>
+
+            <div class="card">
+              <p class="scene" x-text="scenario?.scene"></p>
+            </div>
+
+            <h2 class="question" x-text="scenario?.question"></h2>
+
+            <div class="choices">
+              <template x-for="(choice, index) in scenario?.choices" :key="index">
+                <button
+                  @click="handleChoice(choice)"
+                  class="choice"
+                >
+                  <span class="choice__letter" x-text="String.fromCharCode(65 + index)"></span>
+                  <span x-text="choice.text"></span>
+                </button>
+              </template>
+            </div>
+
+            <div class="score-preview">
+              <template x-for="key in archetypeKeys" :key="key">
+                <div
+                  class="score-chip"
+                  :style="{ color: scores[key] > 0 ? styles[key].color + '99' : 'rgba(255,255,255,0.12)' }"
+                >
+                  <span x-text="styles[key].emoji"></span>
+                  <span x-text="scores[key]"></span>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <!-- RESULT PHASE -->
+      <template x-if="phase === 'result'">
+        <div class="phase-result">
+          <div class="glow glow--center" :style="{ background: 'radial-gradient(circle, ' + primary.color + '12 0%, transparent 55%)' }"></div>
+          <div class="container">
+
+            <!-- Hero -->
+            <div class="result-hero">
+              <p class="eyebrow">Your Leadership Profile</p>
+              <div class="result-emoji" x-text="primary.emoji"></div>
+              <h2 class="result-title" :style="{ color: primary.color }" x-text="primary.name"></h2>
+              <template x-if="secondary">
+                <p class="result-secondary">
+                  with <span :style="{ color: secondary.color }" x-text="secondary.name"></span> tendencies
+                </p>
+              </template>
+              <template x-if="combo">
+                <p class="result-combo" x-text="'&quot;' + combo.label + '&quot;'"></p>
+              </template>
+            </div>
+
+            <!-- Description -->
+            <div class="card">
+              <p class="desc" x-text="primary.desc"></p>
+            </div>
+
+            <!-- Combo Insight -->
+            <template x-if="combo">
+              <div class="card card--accent" :style="{ background: primary.color + '06', borderColor: primary.color + '15' }">
+                <h4 class="section-label" :style="{ color: primary.color }">Your Combination</h4>
+                <p class="combo-insight" x-text="combo.insight"></p>
+              </div>
+            </template>
+
+            <!-- Reflection Questions -->
+            <div class="card card--accent" :style="{ background: primary.color + '06', borderColor: primary.color + '15' }">
+              <h4 class="section-label" :style="{ color: primary.color }">Questions to Sit With</h4>
+              <p class="questions-intro">
+                These aren't exercises. They're prompts for honest self-reflection.
+                Pick the one that makes you most uncomfortable.
+              </p>
+              <template x-for="(q, i) in primary.questions" :key="i">
+                <div class="question-item">
+                  <span class="quote-mark" :style="{ color: primary.color + '60' }">"</span>
+                  <p class="question-text" x-text="q"></p>
+                </div>
+              </template>
+            </div>
+
+            <!-- Strengths & Watch Outs -->
+            <div class="grid-2">
+              <div class="card">
+                <h4 class="section-label section-label--success">Strengths</h4>
+                <template x-for="s in primary.strengths" :key="s">
+                  <p class="list-item" x-text="s"></p>
+                </template>
+              </div>
+              <div class="card">
+                <h4 class="section-label section-label--warning">Watch Outs</h4>
+                <template x-for="w in primary.watchOuts" :key="w">
+                  <p class="list-item" x-text="w"></p>
+                </template>
+              </div>
+            </div>
+
+            <!-- Reading -->
+            <div class="card card--reading">
+              <h4 class="section-label section-label--gold">Recommended Reading</h4>
+              <p class="reading-text" x-text="primary.reading"></p>
+            </div>
+
+            <!-- Actions -->
+            <div class="actions">
+              <button
+                @click="copyResults()"
+                class="btn"
+                :class="copied ? 'btn--success' : 'btn--secondary'"
+                x-text="copied ? 'Copied!' : 'Copy Results for LinkedIn'"
+              ></button>
+              <button @click="reset()" class="btn btn--ghost">
+                Play Again
+              </button>
+            </div>
+
+            <!-- Attribution -->
+            <div class="attribution">
+              <p>Built with care. Scenarios grounded in 16 books and 6 frameworks from engineering leadership literature.</p>
+            </div>
+          </div>
+        </div>
+      </template>
+
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
