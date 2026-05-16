@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 
@@ -10,5 +11,9 @@ export default defineConfig({
   build: {
     target: 'es2020',
     minify: 'esbuild',
+  },
+  test: {
+    include: ['tests/**/*.test.ts'],
+    exclude: ['e2e/**', 'node_modules/**', '.claude/**'],
   },
 });
