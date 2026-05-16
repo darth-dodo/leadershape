@@ -1,6 +1,7 @@
 :root {
   /* Backgrounds */
   --bg-base: #0F1118;
+  color-scheme: dark;
   --bg-card: rgba(255, 255, 255, 0.03);
   --bg-card-hover: rgba(255, 255, 255, 0.05);
   --border-card: rgba(255, 255, 255, 0.06);
@@ -50,4 +51,36 @@
 
   /* Shadows */
   --shadow-glow: 0 0 48px rgba(232, 168, 56, 0.18);
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  /* Backgrounds */
+  --bg-base: #F8F9FA;
+  --bg-card: rgba(0, 0, 0, 0.03);
+  --bg-card-hover: rgba(0, 0, 0, 0.05);
+  --border-card: rgba(0, 0, 0, 0.08);
+
+  /* Text */
+  --text-primary: #1A1A2E;
+  --text-secondary: rgba(0, 0, 0, 0.65);
+  --text-muted: rgba(0, 0, 0, 0.45);
+  --text-subtle: rgba(0, 0, 0, 0.25);
+  --text-faint: rgba(0, 0, 0, 0.12);
+
+  /* Archetype colors — slightly deeper for light bg legibility */
+  --color-coach: #D4920A;
+  --color-architect: #4A6FE3;
+  --color-shield: #2DBDB3;
+  --color-catalyst: #E54545;
+  --color-operator: #8B6FD6;
+
+  /* Semantic */
+  --color-success: #2DBDB3;
+  --color-warning: #E54545;
+  --color-gold: #D4920A;
+
+  /* Shadows */
+  --shadow-glow: 0 0 48px rgba(212, 146, 10, 0.14);
 }

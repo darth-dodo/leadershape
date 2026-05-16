@@ -11,6 +11,7 @@ interface QuizState {
   choiceCount: number;
   copied: boolean;
   showRefs: boolean;
+  theme: 'dark' | 'light';
 }
 
 function createInitialScores(): Scores {
@@ -23,6 +24,12 @@ function createInitialScores(): Scores {
   };
 }
 
+function resolveInitialTheme(): 'dark' | 'light' {
+  const saved = localStorage.getItem('leadershape-theme');
+  if (saved === 'dark' || saved === 'light') return saved;
+  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+}
+
 export function quiz() {
   return {
     // State
@@ -32,6 +39,7 @@ export function quiz() {
     choiceCount: 0,
     copied: false,
     showRefs: false,
+    theme: 'dark' as 'dark' | 'light',
 
     // Exposed data for templates
     styles: STYLES,
@@ -69,7 +77,20 @@ export function quiz() {
       return getComboInsight(this.topStyles);
     },
 
+    // Lifecycle
+    init() {
+      const t = resolveInitialTheme();
+      this.theme = t;
+      document.documentElement.dataset.theme = t;
+    },
+
     // Actions
+    toggleTheme() {
+      this.theme = this.theme === 'dark' ? 'light' : 'dark';
+      document.documentElement.dataset.theme = this.theme;
+      localStorage.setItem('leadershape-theme', this.theme);
+    },
+
     start() {
       this.phase = 'play';
     },

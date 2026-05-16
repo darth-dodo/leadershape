@@ -11,7 +11,17 @@
     <link rel="stylesheet" href="/styles/main.css" />
   </head>
   <body>
-    <div x-data="quiz" class="app">
+    <div x-data="quiz" x-init="init()" class="app">
+
+      <!-- Theme Toggle -->
+      <button
+        @click="toggleTheme()"
+        class="theme-toggle"
+        :aria-label="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+      >
+        <span x-show="theme === 'dark'">☀️</span>
+        <span x-show="theme === 'light'">🌙</span>
+      </button>
 
       <!-- INTRO PHASE -->
       <template x-if="phase === 'intro'">
@@ -87,7 +97,7 @@
               <template x-for="key in archetypeKeys" :key="key">
                 <div
                   class="score-chip"
-                  :style="{ color: scores[key] > 0 ? styles[key].color + '99' : 'rgba(255,255,255,0.12)' }"
+                  :style="{ color: scores[key] > 0 ? styles[key].color + '99' : 'var(--text-faint)' }"
                 >
                   <span x-text="styles[key].emoji"></span>
                   <span x-text="scores[key]"></span>
